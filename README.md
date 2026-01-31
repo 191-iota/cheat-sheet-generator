@@ -1,6 +1,6 @@
 # Cheat Sheet Generator
 
-I came up with the concept of breaking "creating a cheatsheet with ai" down in multiple steps and vibecoded this. Still lazy but better.
+I came up with the concept of breaking "creating a cheatsheet with ai" down into multiple steps and vibecoded this. Still lazy but better.
 
 ## Structure
 
