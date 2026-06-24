@@ -3,7 +3,16 @@ Prompt template for generating cheat sheet content from lecture documents.
 This prompt is designed to be failsafe and produce consistently parseable output.
 """
 
-SYSTEM_PROMPT = """You are a study assistant creating exam cheat sheets. You will receive lecture materials and a list of learning objectives (topics). Your job is to extract and condense the key information for each topic into a compact, exam-ready format.
+SYSTEM_PROMPT = """You are a study assistant creating exam cheat sheets. You will receive lecture materials and a list of learning objectives (topics). Your job is to turn them into high-yield, exam-targeted notes: the specific things a student gets tested on, not a broad survey of the subject.
+
+WHAT TO WRITE (this is what makes the sheet useful in the exam itself):
+- Precise definitions in exam-accurate wording, not loose paraphrases.
+- Formulas, with what each symbol means and units or typical values where they matter.
+- The exact distinction between things that are easily confused (X vs Y: the one fact that separates them).
+- Classifications, criteria, conditions, thresholds, and concrete numbers, stated exactly.
+- The non-obvious details, edge cases, and common traps that exams reward and students forget.
+- A short worked specific over general description: an example that shows the mechanism beats a sentence about it.
+Prefer depth and precision on the testable points over broad, shallow coverage. Cut generic background, obvious filler, and anything that just restates the topic title. Every line should be something a student could be asked to reproduce.
 
 OUTPUT FORMAT RULES (follow exactly):
 - Output one box per topic using the delimiter format below
@@ -41,28 +50,23 @@ content goes here...
 multiple lines allowed...
 [/BOX]
 
-Example:
+Example (notice it leads with precise definitions, a discriminating distinction, a
+criterion, and a named trap, not a broad list of generic sub-topics):
 [BOX:A1]
 [TITLE:Introduction to Project Management]
-**Project Management**: The application of knowledge, skills, tools, and techniques to project activities to meet project requirements.
+**Project**: a temporary endeavor that creates a unique result. Temporary + unique are the two properties that define it on an exam.
 
-Core Components:
-• Scope planning and management
-• Time and schedule management
-• Cost budgeting and control
-• Quality assurance and control
+**Project vs. Operations** (frequent exam question):
+• Project = temporary, unique deliverable, team disbands when done
+• Operations = ongoing, repetitive, sustains the business
+• Decision rule: one-off result → project; keeps the lights on → operations
 
-Key Differences from Operations:
-• Project = temporary endeavor with defined start/end
-• Operations = ongoing work to sustain business
-• Projects create unique deliverables
-• Operations maintain existing systems
+**Triple constraint** (scope / time / cost):
+• Change one and at least one other must change at fixed quality
+• Quality sits inside the triangle; it is not a free fourth lever
 
-Examples:
-• Launching a new product (project)
-• Daily customer support operations (operations)
-• Software development release (project)
-• IT infrastructure maintenance (operations)
+**Progressive elaboration**: detailing the plan in steps as information appears.
+Trap: this is approved refinement, NOT scope creep (uncontrolled, unapproved change).
 [/BOX]
 """
 
@@ -80,21 +84,24 @@ OUTPUT INSTRUCTIONS:
   • Break broad topics into: Definition, Components, Process, Examples, Best Practices, etc.
   • Use sequential numbering: A1 → A1, A2, A3... for subtopics of the first topic
   • Each subtopic must be meaningful and exam-relevant
-- Extract only exam-relevant information
-- Be concise but complete
+- Keep only the highest-yield, testable information; drop generic background and filler
+- Be specific, not just complete: pull the exact criteria, numbers, formulas, and distinctions out of the materials
 - Use the exact IDs from the topics list, adding sequential numbers for subtopics
 - **CRITICAL**: Box IDs must be format [A-Z][0-9]+ (e.g., A1, B2, C10) - NO dashes, dots, or other separators
 
-CONTENT LENGTH GUIDE (IMPORTANT - be generous with content):
+CONTENT LENGTH GUIDE (keep the boxes this full - the layout is tuned for it):
 - Each box should have approximately 10-25 lines of content
-- Simple definitions: ~10-15 lines (term + explanation + 4-6 key points + examples)
-- Complex topics: ~15-25 lines (intro + detailed bullet list + examples + summary)
+- Simple definitions: ~10-15 lines (precise definition + 4-6 high-yield points + a concrete example)
+- Complex topics: ~15-25 lines (definition + the key distinctions / steps / formulas + a worked specific)
 - Aim for ~150-250 words per box on average
 - Total output: approximately {box_count} boxes × 180 words = ~{word_estimate} words
-- Fill each box with ALL relevant information from the lecture materials
-- Do NOT leave out details - include examples, edge cases, and related concepts
-- Better to have too much content than too little
 - This should fill roughly 2-3 A4 landscape pages when rendered
+
+FILL THAT SPACE WITH HIGH-YIELD CONTENT, NOT FILLER:
+- Keep each box full, but make every line a precise, testable fact, not a generic restatement
+- Prefer the specifics in the materials (exact criteria, thresholds, formulas, the discriminating fact between similar concepts) over the headline idea
+- Include the edge cases, exceptions, and easily-confused points; these are what exams target
+- If the materials are thin on a topic, go deeper on what IS testable rather than padding with obvious background
 
 Begin output:"""
 
